@@ -1,0 +1,164 @@
+/* ---- Center + Pink BG (ถ้ายังไม่ได้ใส่) ---- */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #ffd1dc;
+}
+
+/* container กลางจอ */
+.page{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+/* กัน Vite template ดัน layout เพี้ยน */
+#root {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  max-width: none;
+}
+
+.envWrap{
+  width: 360px;
+  height: 300px;
+  display: grid;
+  place-items: center;
+  user-select: none;
+}
+
+.envelope{
+  position: relative;
+  width: 320px;
+  height: 210px;
+}
+
+/* กระดาษ: ตอนเริ่ม “ซ่อน” ไม่ให้เห็นเลย */
+.letter{
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%) translateY(140px);
+  width: 260px;
+  height: 170px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  opacity: 0;                 /* สำคัญ: ซ่อน */
+  pointer-events: none;       /* กันคลิกตอนยังไม่ออกมา */
+  transition: transform 520ms cubic-bezier(.2,.9,.2,1), opacity 200ms ease;
+  z-index: 1;                 /* อยู่ใต้หน้าซอง */
+}
+
+.letterTop{
+  height: 18px;
+  background: #ffe6ef;
+  border-radius: 14px 14px 0 0;
+}
+
+.letterBody{
+  height: calc(170px - 18px);
+  background: white;
+  border-radius: 0 0 14px 14px;
+  box-shadow: 0 14px 35px rgba(0,0,0,.18);
+  padding: 14px;
+  display: grid;
+  gap: 6px;
+}
+
+.letterTitle{ 
+  font-weight: 800; 
+  font-size: 22px; 
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+.letterHint{ 
+  font-size: 18px; 
+  opacity: .7; 
+  font-family: 'Gill Sans';
+}
+
+/* ตัวซอง */
+.envBack{
+  position: absolute; inset: 0;
+  background: #ff8fb1;
+  border-radius: 18px;
+  box-shadow: 0 18px 50px rgba(0,0,0,.18);
+  z-index: 0;
+}
+
+.envFront{
+  position: absolute; inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  z-index: 3; /* หน้าซองอยู่ทับกระดาษตอนปิด */
+}
+
+/* สามเหลี่ยมหน้า */
+.envFront::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  margin:auto;
+  width:0; height:0;
+  border-left:160px solid transparent;
+  border-right:160px solid transparent;
+  border-top:110px solid #ff6f9f;
+}
+
+/* .envFront::after{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:90px;
+  background:#ffffff;
+  border-radius: 0 0 18px 18px;
+} */
+
+/* ฝาซอง */
+.envFlap{
+  position:absolute;
+  left:0; right:0; top:0;
+  margin:auto;
+  width:0; height:0;
+
+  border-left:160px solid transparent;
+  border-right:160px solid transparent;
+
+  /* เปลี่ยนจาก border-bottom -> border-top */
+  border-bottom: 0;
+  border-top: 110px solid #ffb3c8;
+
+  transform-origin: top center;
+  transition: transform 520ms cubic-bezier(.2,.9,.2,1); 
+  z-index: 4;
+}
+
+/* สเต็ป 1: เปิดฝา */
+.envWrap.is-flap-open .envFlap{
+  transform: rotateX(180deg);
+  /* ถ้าหมุนแล้วดูแปลก ลองใช้ -180deg */
+  /* transform: rotateX(-180deg); */
+}
+
+/* สเต็ป 2: กระดาษเด้งออกมา */
+.envWrap.is-letter-out .letter{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-64px);
+  z-index: 5; /* ตอนออกมาให้อยู่บน */
+}
+
+
+/* เด้งนิด ๆ */
+@keyframes letterPop {
+  0%   { transform: translateX(-50%) translateY(84px); }
+  70%  { transform: translateX(-50%) translateY(-74px); }
+  100% { transform: translateX(-50%) translateY(-64px); }
+}
+
+

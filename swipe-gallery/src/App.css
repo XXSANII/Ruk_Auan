@@ -1,0 +1,186 @@
+/* =========================
+   Base
+   ========================= */
+* { box-sizing: border-box; }
+
+.page{
+  width: 100%;
+  padding: clamp(12px, 4vw, 24px);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+h1{ margin: 0 0 12px; }
+
+.title{
+  font-size: clamp(22px, 4.5vw, 34px);
+  line-height: 1.1;
+  margin: 0 0 8px;
+}
+
+.font-lg{
+  font-size: 18px;
+  text-decoration: none;
+}
+
+/* =========================
+   Notes (Responsive Layout)
+   Mobile/Tablet: stack
+   Desktop: 2 columns
+   ========================= */
+
+/* Default (มือถือ + iPad): ซ้อนบน-ล่าง */
+.noteLayout{
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(14px, 3vw, 24px);
+  align-items: start;
+}
+
+/* Desktop ค่อยแยก 2 ฝั่ง */
+@media (min-width: 960px){
+  .noteLayout{
+    grid-template-columns: minmax(0, 1fr) 360px; /* ซ้ายยืด ขวาคงที่ */
+    gap: 24px;
+  }
+}
+
+/* ฝั่งซ้าย */
+.noteLeft{
+  display: grid;
+  place-items: center;
+}
+
+/* กรอบครอบ DeckSwipe (กันลอยทับ + ทำให้ย่อขยายตามจอ) */
+.deckStage{
+  position: relative;
+
+  /* iPhone 13: กว้างสุด ~360-380 จะสวย */
+  width: min(92vw, 420px);
+
+  /* รักษาสัดส่วนแทนการ fix height */
+  aspect-ratio: 460 / 560;
+
+  display: grid;
+  place-items: center;
+
+  /* สำคัญ: ถ้า DeckSwipe ภายใน absolute จะไม่ล้นข้าม layout */
+  overflow: visible;
+}
+
+/* บังคับให้ DeckSwipe กินเต็มกรอบ (ช่วยเยอะมากบนมือถือ) */
+.deckStage > *{
+  width: 100%;
+  height: 100%;
+}
+
+/* Desktop ให้กรอบใหญ่ขึ้นนิด */
+@media (min-width: 960px){
+  .deckStage{
+    width: 460px;
+  }
+}
+
+/* ฝั่งขวา */
+.noteRight{
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto; /* ตอนซ้อนบน-ล่างให้อยู่กลาง */
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* Desktop: ขวาชิดซ้ายของคอลัมน์ */
+@media (min-width: 960px){
+  .noteRight{
+    max-width: 360px;
+    margin: 0;
+  }
+}
+
+/* =========================
+   Password UI (iPhone 13 friendly)
+   ========================= */
+.hint{
+  margin: 0;
+  opacity: 0.75;
+  font-size: 14px;
+}
+
+/* 6 ช่องอยู่บรรทัดเดียวแบบยืด ไม่ล้น */
+.codeRow{
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: clamp(6px, 2vw, 10px);
+  width: 100%;
+}
+
+.codeBox{
+  width: 100%;
+  aspect-ratio: 1 / 1.18; /* ทำให้เป็นสี่เหลี่ยมสูงนิด ๆ */
+  height: auto;
+
+  border-radius: 12px;
+  border: 2px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.92);
+  text-align: center;
+
+  font-size: clamp(16px, 4.2vw, 22px);
+  font-weight: 800;
+
+  box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+  outline: none;
+}
+
+.codeBox:focus{
+  border-color: #ff6f9f;
+  box-shadow: 0 14px 28px rgba(255,111,159,0.22);
+}
+
+/* iPhone 13/จอเล็ก: เพิ่มความชิดขอบนิดนึงและกันบีบ */
+@media (max-width: 430px){
+  .noteLayout{ gap: 14px; }
+  .noteRight{ gap: 12px; }
+  .codeRow{ gap: 8px; }
+}
+
+/* =========================
+   Video Page
+   ========================= */
+.videoPage{
+  display: grid;
+  place-items: center;
+  gap: 16px;
+}
+
+/* =========================
+   Reveal animation
+   ========================= */
+.reveal{
+  opacity: 0;
+  transform: translateY(-16px);
+  filter: blur(6px);
+  transition: opacity 700ms ease, transform 700ms ease, filter 700ms ease;
+}
+
+.reveal.show{
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.reveal.d1{ transition-delay: 80ms; }
+.reveal.d2{ transition-delay: 180ms; }
+.reveal.d3{ transition-delay: 280ms; }
+.reveal.d4{ transition-delay: 380ms; }
+
+@media (prefers-reduced-motion: reduce){
+  .reveal, .reveal.show{
+    transition: none;
+    transform: none;
+    filter: none;
+    opacity: 1;
+  }
+}
