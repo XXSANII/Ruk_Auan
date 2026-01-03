@@ -3,23 +3,18 @@ import { EffectCards } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-cards";
 
+import photo from "../assets/img/photo.PNG";
+import img6230 from "../assets/img/IMG_6230.JPG";
+import flower from "../assets/img/flower.JPG";
+import glass from "../assets/img/glass.JPG";
+import p1 from "../assets/img/p1.JPG";
+
 export default function DeckSwipe() {
-  const images = [
-    "../src/assets/img/photo.PNG",
-    "../src/assets/img/IMG_6230.JPG",
-    "../src/assets/img/flower.JPG",
-    "../src/assets/img/glass.JPG",
-    "../src/assets/img/p1.JPG",
-  ];
+  const images = [photo, img6230, flower, glass, p1];
 
   return (
     <div style={{ width: 320, height: 460 }}>
-      <Swiper
-        effect="cards"
-        grabCursor
-        modules={[EffectCards]}
-        style={{ width: "100%", height: "100%" }}
-      >
+      <Swiper effect="cards" grabCursor modules={[EffectCards]} style={{ width: "100%", height: "100%" }}>
         {images.map((src, i) => (
           <SwiperSlide key={i} style={{ borderRadius: 18, overflow: "hidden" }}>
             <img
